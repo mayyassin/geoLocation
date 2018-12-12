@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   Image,
   Platform,
@@ -8,26 +8,45 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-
 import { Button, List, Card, CardItem, Body } from "native-base";
 import { WebBrowser } from "expo";
 import { connect } from "react-redux";
 import { MonoText } from "../components/StyledText";
-import BudgetsView from "../components/BudgetsView";
 
-class HomeScreen extends React.Component {
+class TransactionView extends Component {
   static navigationOptions = {
-    title: "Home"
+    title: "Budgets"
   };
 
+  renderCard(trans) {
+    budget = this.props.budgets.find(b => b.id === trans.budget);
+
+    return (
+      <Card key={trans.id}>
+        <CardItem>
+          <Body>
+            <Text>{trans.name}</Text>
+            <Text>{trans.amount.toFixed(2)}KWD</Text>
+            <Text>{budget.name}</Text>
+          </Body>
+        </CardItem>
+      </Card>
+    );
+  }
+
   render() {
+    const transactions = this.props.transactions;
+    let ListItems;
+    if (transactions) {
+      ListItems = transactions.map(trans => this.renderCard(trans));
+    }
     return (
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
-          <Text> Home</Text>
+          <List>{ListItems}</List>
         </ScrollView>
         <View>
           <Button
@@ -35,12 +54,7 @@ class HomeScreen extends React.Component {
             success
             onPress={() => this.props.navigation.navigate("Budgets")}
           >
-            <Text style={{ color: "white" }}>Move</Text>
-          </Button>
-          <Button
-            onPress={() => this.props.navigation.navigate("RegisterationForm")}
-          >
-            <Text>Login</Text>
+            <Text style={{ color: "white" }}> ADD</Text>
           </Button>
         </View>
       </View>
@@ -48,12 +62,15 @@ class HomeScreen extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  transactions: state.transaction.transactions,
+  budgets: state.budget.budgets
+});
 const mapDispatchToProps = dispatch => ({});
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(HomeScreen);
+)(TransactionView);
 
 const styles = StyleSheet.create({
   container: {
@@ -141,6 +158,5 @@ const styles = StyleSheet.create({
   helpLinkText: {
     fontSize: 14,
     color: "#2e78b7"
-
   }
 });
