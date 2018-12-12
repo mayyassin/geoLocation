@@ -9,12 +9,15 @@ import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
 import LinksScreen from "../screens/LinksScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+
 import mandatoryInfo from "../components/MandatoryUserInfo";
 import RegisterationForm from "../components/RegisterationForm";
 import userBudgets from "../components/Budgets";
 import AddTransactionView from "../components/AddTransactionView";
 import TransactionsView from "../components/TransactionsView";
 import BudgetsView from "../components/BudgetsView";
+import Login from "../components/Login";
+import Profile from "../components/Profile";
 
 const HomeStack = createStackNavigator(
   {
@@ -23,7 +26,9 @@ const HomeStack = createStackNavigator(
     Budgets: BudgetsView,
     mandatoryInfo: mandatoryInfo,
     userBudgets: userBudgets,
-    RegisterationForm: RegisterationForm
+    RegisterationForm: RegisterationForm,
+    Login: Login,
+    Profile: Profile
   },
   {
     initialRouteName: "Home",
@@ -59,6 +64,7 @@ HomeStack.navigationOptions = {
 };
 
 const LinksStack = createStackNavigator({
+  //Links: LinksScreen
 
   Transaction: TransactionsView
 
@@ -75,7 +81,11 @@ LinksStack.navigationOptions = {
 };
 
 const SettingsStack = createStackNavigator({
+
+ // Settings: SettingsScreen
+
    Transaction: TransactionsView
+
 
 });
 
