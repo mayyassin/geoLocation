@@ -28,9 +28,14 @@ class Login extends Component {
       password: ""
     };
   }
+  componentDidMount() {
+    if (this.props.user) {
+      this.props.navigation.replace("mandatoryInfo");
+    }
+  }
   componentDidUpdate(prevProps) {
     if (prevProps.profile !== this.props.profile) {
-      this.props.navigation.replace("Profile");
+      this.props.navigation.replace("mandatoryInfo");
     }
   }
   render() {

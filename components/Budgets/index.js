@@ -11,6 +11,9 @@ import {
   Alert,
   ScrollView
 } from "react-native";
+
+import { Input } from "native-base";
+
 import { Row, Grid } from "react-native-easy-grid";
 import { Button, H1, Item, Picker, Icon } from "native-base";
 import styles from "./styles";
@@ -42,7 +45,8 @@ class userBudgets extends Component {
     // if (e.nativeEvent.text.length > 0) {
     //   value = parseFloat(e.nativeEvent.text);
     // }
-    value = parseFloat(value);
+    // value = parseFloat(value);
+
     if (
       this.state.totalBudget < this.props.balance &&
       value + this.state.totalBudget < this.props.balance
@@ -54,7 +58,8 @@ class userBudgets extends Component {
       });
       this.setState(prevState => ({
         budgets: newAmount,
-        totalBudget: prevState.totalBudget - parseFloat(oldAmount) + value
+        // totalBudget: prevState.totalBudget - parseFloat(oldAmount) + value
+        totalBudget: prevState.totalBudget - oldAmount + value
       }));
     } else {
       alert("You can't exceed you current balance");
@@ -78,7 +83,9 @@ class userBudgets extends Component {
       }
     });
     if (filled) {
-      this.props.addBudgets(this.state.budgets, this.props.navigation);
+      this.state.budgets.forEach(budget =>
+        this.props.addBudget(budget, this.props.navigation)
+      );
     } else {
       alert("Please make sure that you fill in all the boxes");
     }
@@ -91,7 +98,7 @@ class userBudgets extends Component {
     });
   };
 
-  onValueChange2(value: string, i) {
+  onValueChange2(value, i) {
     const newCategory = this.state.budgets.map((budget, sidx) => {
       if (i !== sidx) return budget;
       return { ...budget, category: value };
@@ -119,12 +126,14 @@ class userBudgets extends Component {
         <View style={styles.inputWrap}>
           <Text style={styles.label}>Amount</Text>
           <View style={styles.inputContainer}>
-            <TextInput
+            <Input
               style={styles.inputs}
-              keyboardType="numeric"
+              // keyboardType="numeric"
               value={idx.amount}
               clearTextOnFocus={true}
-              onChangeText={value => this.handleBudgetAmountChange(value, i)}
+              onChangeText={value =>
+                this.handleBudgetAmountChange(parseFloat(value), i)
+              }
               // onEndEditing={e => this.handleBudgetAmountChange(e, i)}
             />
           </View>
@@ -147,9 +156,15 @@ class userBudgets extends Component {
               selectedValue={idx.category}
               onValueChange={value => this.onValueChange2(value, i)}
             >
-              <Picker.Item key={1} label={"FOOD"} value={"FOOD"} />
-              <Picker.Item key={2} label={"Medical"} value={"Medical"} />
-              <Picker.Item key={3} label={"Misc"} value={"Misc"} />
+              <Picker.Item key={1} label={"Food"} value={"Food"} />
+              <Picker.Item key={2} label={"Health"} value={"Health"} />
+              <Picker.Item key={3} label={"Emergency"} value={"Emergency"} />
+              <Picker.Item
+                key={4}
+                label={"Entertainment"}
+                value={"Entertainment"}
+              />
+              <Picker.Item key={5} label={"Others"} value={"Others"} />
             </Picker>
           </Item>
         </Row>
@@ -188,8 +203,8 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = dispatch => {
   return {
-    addBudgets: (budgets, navigation) =>
-      dispatch(actionCreators.addBudgets(budgets, navigation))
+    addBudget: (budget, navigation) =>
+      dispatch(actionCreators.addBudget(budget, navigation))
   };
 };
 

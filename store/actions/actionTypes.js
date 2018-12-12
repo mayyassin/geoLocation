@@ -1,4 +1,3 @@
-
 //Auth Types
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const SET_ERROR = "SET_ERROR";
@@ -13,10 +12,10 @@ export const GET_BALANCE = "GET_BALANCE";
 
 //Transaction Actions
 export const ADD_TRANSACTION = "ADD_TRANSACTION";
-export const TRANSACTION_LOADING = "TRANSACTION_LOADING";
-export const FETCH_TRANSACTION = "FETCH_TRANSACTION";
+export const UPDATE_TRANSACTION = "UPDATE_TRANSACTION";
+export const FETCH_TRANSACTIONS = "FETCH_TRANSACTIONS";
 
 //Budget Actions
+export const FETCH_BUDGETS = "FETCH_BUDGETS";
 export const UPDATE_BUDGET = "UPDATE_BUDGET";
-export const ADD_BUDGETS = "ADD_BUDGETS";
-
+export const ADD_BUDGET = "ADD_BUDGET";

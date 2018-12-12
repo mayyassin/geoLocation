@@ -34,11 +34,10 @@ class AddTransactionView extends React.Component {
     this.state = {
       budget: undefined,
       amount: 0,
-      id: 1,
-      name: ""
+      label: ""
     };
   }
-  onValueChange2(value: string) {
+  onValueChange2(value) {
     this.setState({
       budget: value
     });
@@ -46,33 +45,36 @@ class AddTransactionView extends React.Component {
   async sendTransaction() {
     if (this.state.budget === undefined) {
       alert("Please select a budget");
-    } else if (this.state.name === "") {
+    } else if (this.state.label === "") {
       alert("Please enter a label");
     } else if (this.state.amount === 0) {
       alert("Please enter a valid value");
     } else {
-      const setBudget = this.props.budgets.find(b => {
+      let setBudget = this.props.budgets.find(b => {
         if (b.id === this.state.budget) {
           return b;
         }
         return false;
       });
-      await this.props.updateBudget(
+      setBudget.amount = setBudget.amount - this.state.amount;
+      console.log(setBudget.amount + "is it updated?");
+      await this.props.updateBudget(setBudget, this.props.navigation);
+      await this.props.makeTransaction(
+        { label: this.state.label, amount: this.state.amount },
         this.state.budget,
-        setBudget.amount - this.state.amount
+        this.props.navigation
       );
-      await this.props.makeTransaction(this.state);
-      console.log(this.props.transactions);
-      this.props.navigation.goBack();
+      // console.log(this.props.transactions);
+      // this.props.navigation.goBack();
     }
   }
   renderCard(budget) {
     return (
-      <Picker.Item key={budget.id} label={budget.category} value={budget.id} />
+      <Picker.Item key={budget.id} label={budget.label} value={budget.id} />
     );
   }
   render() {
-    const budgets = this.props.budgets;
+    const budgets = this.props.profile.budgets;
     let ListItems;
     if (budgets) {
       ListItems = budgets.map(budget => this.renderCard(budget));
@@ -101,7 +103,7 @@ class AddTransactionView extends React.Component {
             <Item>
               <Input
                 placeholder="Transaction..."
-                onChangeText={value => this.setState({ name: value })}
+                onChangeText={value => this.setState({ label: value })}
               />
             </Item>
             <Item>
@@ -126,14 +128,15 @@ class AddTransactionView extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  profile: state.auth.profile,
   budgets: state.budget.budgets,
   transactions: state.transaction.transactions
 });
 const mapDispatchToProps = dispatch => ({
-  updateBudget: (budget, amount) =>
-    dispatch(actionCreators.updateBudget(budget, amount)),
-  makeTransaction: (transaction, navigation) =>
-    dispatch(actionCreators.addTransaction(transaction, navigation))
+  updateBudget: (budget, navigation) =>
+    dispatch(actionCreators.updateBudget(budget, navigation)),
+  makeTransaction: (transaction, budget_id, navigation) =>
+    dispatch(actionCreators.addTransaction(transaction, budget_id, navigation))
 });
 export default connect(
   mapStateToProps,

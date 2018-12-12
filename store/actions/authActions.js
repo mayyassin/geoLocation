@@ -41,7 +41,6 @@ export const checkForExpiredToken = () => {
 };
 
 export const login = (userData, navigation) => {
-  console.log(userData);
   return dispatch => {
     instance
       .post("login/", userData)
@@ -51,7 +50,6 @@ export const login = (userData, navigation) => {
         setAuthToken(user.token).then(() =>
           dispatch(setCurrentUser(decodedUser))
         );
-        console.log(decodedUser);
       })
 
       .catch(err => console.error(err.response));
@@ -113,7 +111,6 @@ export const fetchProfile = () => {
         return res.data;
       })
       .then(profile => {
-        console.log(profile);
         return dispatch({ type: actionTypes.FETCH_PROFILE, payload: profile });
       })
 

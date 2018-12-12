@@ -14,6 +14,8 @@ import * as actionCreators from "../../store/actions";
 import Nav from "../Navigation";
 
 class HomePage extends Component {
+  componentDidMount() {}
+
   render() {
     return (
       <Container style={styles.transparent}>
