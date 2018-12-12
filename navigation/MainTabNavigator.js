@@ -9,15 +9,47 @@ import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
 import LinksScreen from "../screens/LinksScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+
+import mandatoryInfo from "../components/MandatoryUserInfo";
+import RegisterationForm from "../components/RegisterationForm";
+import userBudgets from "../components/Budgets";
+import AddTransactionView from "../components/AddTransactionView";
+import TransactionsView from "../components/TransactionsView";
+import BudgetsView from "../components/BudgetsView";
 import Login from "../components/Login";
 import Profile from "../components/Profile";
 
-const HomeStack = createStackNavigator({
-  Login: Login,
-  Profile: Profile
-});
+const HomeStack = createStackNavigator(
+  {
+    Home: HomeScreen,
+    Add: AddTransactionView,
+    Budgets: BudgetsView,
+    mandatoryInfo: mandatoryInfo,
+    userBudgets: userBudgets,
+    RegisterationForm: RegisterationForm,
+    Login: Login,
+    Profile: Profile
+  },
+  {
+    initialRouteName: "Home",
+    navigationOptions: {
+      headerTintColor: "black",
+      headerStyle: {
+        backgroundColor: "white"
+      },
+      headerTextStyle: {
+        fontWeight: "bold",
+        color: "black"
+      }
+    },
+    cardStyle: {
+      backgroundColor: "gray"
+    }
+  }
+);
 
 HomeStack.navigationOptions = {
+  title: "Home",
   tabBarLabel: "Home",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -32,7 +64,10 @@ HomeStack.navigationOptions = {
 };
 
 const LinksStack = createStackNavigator({
-  Links: LinksScreen
+  //Links: LinksScreen
+
+  Transaction: TransactionsView
+
 });
 
 LinksStack.navigationOptions = {
@@ -46,7 +81,12 @@ LinksStack.navigationOptions = {
 };
 
 const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen
+
+ // Settings: SettingsScreen
+
+   Transaction: TransactionsView
+
+
 });
 
 SettingsStack.navigationOptions = {

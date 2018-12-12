@@ -8,39 +8,50 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-
 import { Button, List, Card, CardItem, Body } from "native-base";
 import { WebBrowser } from "expo";
 import { connect } from "react-redux";
 import { MonoText } from "../components/StyledText";
-import BudgetsView from "../components/BudgetsView";
 
-class HomeScreen extends React.Component {
+class BudgetsView extends React.Component {
   static navigationOptions = {
-    title: "Home"
+    title: "Budgets"
   };
-
+  renderCard(budget) {
+    return (
+      <Card>
+        <CardItem>
+          <Body>
+            <Text>{budget.category}</Text>
+            <Text>{parseFloat(budget.amount).toFixed(2)}KWD</Text>
+          </Body>
+        </CardItem>
+      </Card>
+    );
+  }
   render() {
+    const budgets = this.props.budgets;
+    let ListItems;
+    if (budgets) {
+      console.log(budgets);
+
+      ListItems = budgets.map(budget => this.renderCard(budget));
+    }
     return (
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
-          <Text> Home</Text>
+          <List>{ListItems}</List>
         </ScrollView>
         <View>
           <Button
             block
             success
-            onPress={() => this.props.navigation.navigate("Budgets")}
+            onPress={() => this.props.navigation.navigate("Add")}
           >
-            <Text style={{ color: "white" }}>Move</Text>
-          </Button>
-          <Button
-            onPress={() => this.props.navigation.navigate("RegisterationForm")}
-          >
-            <Text>Login</Text>
+            <Text style={{ color: "white" }}> ADD</Text>
           </Button>
         </View>
       </View>
@@ -48,12 +59,14 @@ class HomeScreen extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  budgets: state.budget.budgets
+});
 const mapDispatchToProps = dispatch => ({});
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(HomeScreen);
+)(BudgetsView);
 
 const styles = StyleSheet.create({
   container: {
@@ -141,6 +154,5 @@ const styles = StyleSheet.create({
   helpLinkText: {
     fontSize: 14,
     color: "#2e78b7"
-
   }
 });
