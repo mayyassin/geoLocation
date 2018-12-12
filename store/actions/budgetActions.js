@@ -13,3 +13,10 @@ export const updateBudget = (budget, amount) => {
     });
   };
 };
+
+export const addBudgets = budgets => {
+  return {
+    type: actionTypes.ADD_BUDGETS,
+    payload: budgets
+  };
+};
