@@ -12,7 +12,7 @@ import {
   ScrollView
 } from "react-native";
 import { Row, Grid } from "react-native-easy-grid";
-import { Button, H1 } from "native-base";
+import { Button, H1, Item, Picker, Icon } from "native-base";
 import styles from "./styles";
 class userBudgets extends Component {
   constructor(props) {
@@ -24,6 +24,7 @@ class userBudgets extends Component {
     this.handleAddBudget = this.handleAddBudget.bind(this);
     this.handleBudgetLabelChange = this.handleBudgetLabelChange.bind(this);
     this.handleBudgetAmountChange = this.handleBudgetAmountChange.bind(this);
+    this.onValueChange2 = this.onValueChange2.bind(this);
   }
 
   handleBudgetLabelChange = (value, i) => {
@@ -90,6 +91,17 @@ class userBudgets extends Component {
     });
   };
 
+  onValueChange2(value: string, i) {
+    const newCategory = this.state.budgets.map((budget, sidx) => {
+      if (i !== sidx) return budget;
+      return { ...budget, category: value };
+    });
+
+    this.setState({
+      budgets: newCategory
+    });
+  }
+
   render() {
     const inputRows = this.state.budgets.map((idx, i) => (
       <Row key={`${i}`}>
@@ -124,6 +136,23 @@ class userBudgets extends Component {
         >
           <Text>x</Text>
         </Button>
+        <Row>
+          <Item picker>
+            <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="ios-arrow-dropdown" />}
+              placeholder="Select the Budget"
+              placeholderStyle={{ color: "#bfc6ea" }}
+              placeholderIconColor="#007aff"
+              selectedValue={idx.category}
+              onValueChange={value => this.onValueChange2(value, i)}
+            >
+              <Picker.Item key={1} label={"FOOD"} value={"FOOD"} />
+              <Picker.Item key={2} label={"Medical"} value={"Medical"} />
+              <Picker.Item key={3} label={"Misc"} value={"Misc"} />
+            </Picker>
+          </Item>
+        </Row>
       </Row>
     ));
     return (

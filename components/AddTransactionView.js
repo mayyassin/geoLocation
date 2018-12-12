@@ -68,7 +68,7 @@ class AddTransactionView extends React.Component {
   }
   renderCard(budget) {
     return (
-      <Picker.Item key={budget.id} label={budget.name} value={budget.id} />
+      <Picker.Item key={budget.id} label={budget.category} value={budget.id} />
     );
   }
   render() {

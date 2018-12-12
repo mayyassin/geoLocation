@@ -19,11 +19,11 @@ class BudgetsView extends React.Component {
   };
   renderCard(budget) {
     return (
-      <Card key={budget.id}>
+      <Card>
         <CardItem>
           <Body>
-            <Text>{budget.name}</Text>
-            <Text>{budget.amount.toFixed(2)}KWD</Text>
+            <Text>{budget.category}</Text>
+            <Text>{parseFloat(budget.amount).toFixed(2)}KWD</Text>
           </Body>
         </CardItem>
       </Card>
@@ -33,6 +33,8 @@ class BudgetsView extends React.Component {
     const budgets = this.props.budgets;
     let ListItems;
     if (budgets) {
+      console.log(budgets);
+
       ListItems = budgets.map(budget => this.renderCard(budget));
     }
     return (
