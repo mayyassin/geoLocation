@@ -12,18 +12,21 @@ import { Button, List, Card, CardItem, Body } from "native-base";
 import { WebBrowser } from "expo";
 import { connect } from "react-redux";
 import { MonoText } from "../components/StyledText";
+import * as actionCreators from "../store/actions";
 
 class BudgetsView extends React.Component {
   static navigationOptions = {
     title: "Budgets"
   };
+  componentDidUpdate(prevProps) {}
   renderCard(budget) {
     return (
-      <Card>
+      <Card key={budget.id}>
         <CardItem>
           <Body>
+            <Text>{budget.label}</Text>
             <Text>{budget.category}</Text>
-            <Text>{parseFloat(budget.amount).toFixed(2)}KWD</Text>
+            <Text>{parseFloat(budget.amount).toFixed(3)}KWD</Text>
           </Body>
         </CardItem>
       </Card>
@@ -60,9 +63,12 @@ class BudgetsView extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  profile: state.auth.profile,
   budgets: state.budget.budgets
 });
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  fetchBudgets: () => dispatch(actionCreators.fetchBudgets())
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

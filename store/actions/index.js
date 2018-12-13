@@ -1,4 +1,3 @@
-
 export {
   login,
   signup,
@@ -9,5 +8,9 @@ export {
 } from "./authActions";
 
 export { addIncome, addExpenses, getBalance } from "./userInfo";
-export { addBudgets, updateBudget } from "./budgetActions";
-export { addTransaction } from "./transactionActions";
+export { addBudget, updateBudget, fetchBudgets } from "./budgetActions";
+export {
+  addTransaction,
+  fetchTransactions,
+  updateTransaction
+} from "./transactionActions";

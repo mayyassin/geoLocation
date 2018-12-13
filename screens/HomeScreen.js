@@ -14,11 +14,23 @@ import { WebBrowser } from "expo";
 import { connect } from "react-redux";
 import { MonoText } from "../components/StyledText";
 import BudgetsView from "../components/BudgetsView";
+// Actions
+import * as actionCreators from "../store/actions";
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: "Home"
   };
+
+  async componentDidMount() {
+    await this.props.checkForExpiredToken();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.user !== this.props.user) {
+      this.props.fetchBudgets();
+    }
+  }
 
   render() {
     return (
@@ -37,9 +49,7 @@ class HomeScreen extends React.Component {
           >
             <Text style={{ color: "white" }}>Move</Text>
           </Button>
-          <Button
-            onPress={() => this.props.navigation.navigate("RegisterationForm")}
-          >
+          <Button onPress={() => this.props.navigation.navigate("Login")}>
             <Text>Login</Text>
           </Button>
         </View>
@@ -48,8 +58,13 @@ class HomeScreen extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({});
-const mapDispatchToProps = dispatch => ({});
+const mapStateToProps = state => ({
+  user: state.auth.user
+});
+const mapDispatchToProps = dispatch => ({
+  fetchBudgets: () => dispatch(actionCreators.fetchBudgets()),
+  checkForExpiredToken: () => dispatch(actionCreators.checkForExpiredToken())
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps
@@ -141,6 +156,5 @@ const styles = StyleSheet.create({
   helpLinkText: {
     fontSize: 14,
     color: "#2e78b7"
-
   }
 });
