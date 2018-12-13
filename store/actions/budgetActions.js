@@ -9,10 +9,7 @@ export const fetchBudgets = () => {
   return dispatch => {
     instance
       .get("list/")
-      .then(res => {
-        console.log("----------------" * 5 + res.data);
-        return res.data;
-      })
+      .then(res => res.data)
       .then(budgets => {
         dispatch({ type: actionTypes.FETCH_BUDGETS, payload: budgets });
       })

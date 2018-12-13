@@ -21,12 +21,12 @@ class BudgetsView extends React.Component {
   componentDidUpdate(prevProps) {}
   renderCard(budget) {
     return (
-      <Card>
+      <Card key={budget.id}>
         <CardItem>
           <Body>
             <Text>{budget.label}</Text>
             <Text>{budget.category}</Text>
-            <Text>{parseFloat(budget.amount).toFixed(2)}KWD</Text>
+            <Text>{parseFloat(budget.amount).toFixed(3)}KWD</Text>
           </Body>
         </CardItem>
       </Card>
