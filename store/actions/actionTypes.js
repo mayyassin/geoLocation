@@ -19,3 +19,13 @@ export const FETCH_TRANSACTIONS = "FETCH_TRANSACTIONS";
 export const FETCH_BUDGETS = "FETCH_BUDGETS";
 export const UPDATE_BUDGET = "UPDATE_BUDGET";
 export const ADD_BUDGET = "ADD_BUDGET";
+
+//Deposits Actions
+export const ADD_DEPOSIT = "ADD_DEPOSIT";
+export const UPDATE_DEPOSIT = "UPDATE_DEPOSIT";
+export const FETCH_DEPOSITS = "FETCH_DEPOSITS";
+
+//Goal Actions
+export const FETCH_GOALS = "FETCH_GOALS";
+export const UPDATE_GOAL = "UPDATE_GOAL";
+export const ADD_GOAL = "ADD_GOAL";
