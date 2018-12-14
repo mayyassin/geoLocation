@@ -22,8 +22,8 @@ class HomeScreen extends React.Component {
     title: "Home"
   };
 
-  async componentDidMount() {
-    await this.props.checkForExpiredToken();
+  componentDidMount() {
+    this.props.checkForExpiredToken();
   }
 
   componentDidUpdate(prevProps) {
@@ -49,9 +49,39 @@ class HomeScreen extends React.Component {
           >
             <Text style={{ color: "white" }}>Move</Text>
           </Button>
-          <Button onPress={() => this.props.navigation.navigate("Login")}>
-            <Text>Login</Text>
-          </Button>
+          {!this.props.user ? (
+            <Button
+              block
+              onPress={() => this.props.navigation.navigate("Login")}
+            >
+              <Text>Login</Text>
+            </Button>
+          ) : (
+            <Button
+              block
+              onPress={() => this.props.navigation.navigate("mandatoryInfo")}
+            >
+              <Text>Expenses</Text>
+            </Button>
+          )}
+          {this.props.user && (
+            <View>
+              <Button
+                block
+                warning
+                onPress={() => this.props.navigation.navigate("Profile")}
+              >
+                <Text>Profile</Text>
+              </Button>
+
+              <Button
+                block
+                onPress={() => this.props.navigation.navigate("UpdateProfile")}
+              >
+                <Text>Update Profile</Text>
+              </Button>
+            </View>
+          )}
         </View>
       </View>
     );

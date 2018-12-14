@@ -50,6 +50,7 @@ export const login = (userData, navigation) => {
         setAuthToken(user.token).then(() =>
           dispatch(setCurrentUser(decodedUser))
         );
+        navigation.replace("userBudgets");
       })
 
       .catch(err => console.error(err.response));
@@ -69,8 +70,8 @@ export const signup = (userData, navigation) => {
 };
 
 export const logout = navigation => {
-  // navigation.replace("ItemList");
-  navigation.navigate("CategoriesList");
+  navigation.replace("Home");
+
   setAuthToken();
   return setCurrentUser(null);
 };
@@ -85,16 +86,17 @@ const setCurrentUser = user => {
   };
 };
 
-export const updateProfile = (user_id, profile, navigation) => {
+export const updateProfile = (profile, navigation) => {
   return dispatch => {
-    axios
-      .put(`http://192.168.100.39/api/profile/${user_id}/update/`, profile)
+    instance
+      .put(`profile/update/`, profile)
       .then(res => res.data)
       .then(profile => {
         dispatch({
           type: actionTypes.UPDATE_PROFILE,
           payload: profile
         });
+        navigation.replace("Home");
       })
 
       .catch(err => {

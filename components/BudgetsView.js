@@ -18,7 +18,12 @@ class BudgetsView extends React.Component {
   static navigationOptions = {
     title: "Budgets"
   };
-  componentDidUpdate(prevProps) {}
+  componentDidMount() {
+    this.props.fetchBudgets();
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.budgets !== this.props.budgets) this.props.fetchBudgets();
+  }
   renderCard(budget) {
     return (
       <Card key={budget.id}>
@@ -54,7 +59,14 @@ class BudgetsView extends React.Component {
             success
             onPress={() => this.props.navigation.navigate("Add")}
           >
-            <Text style={{ color: "white" }}> ADD</Text>
+            <Text style={{ color: "white" }}> ADD Transaction</Text>
+          </Button>
+          <Button
+            block
+            warning
+            onPress={() => this.props.navigation.navigate("userBudgets")}
+          >
+            <Text style={{ color: "white" }}> ADD Budget</Text>
           </Button>
         </View>
       </View>

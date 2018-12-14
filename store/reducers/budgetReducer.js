@@ -2,15 +2,21 @@ import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   budgets: [],
+  totalUserBudget: 0,
   loading: false
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.FETCH_BUDGETS:
+      let totalUserBudget = 0;
+      action.payload.forEach(
+        budget => (totalUserBudget += parseFloat(budget.amount))
+      );
       return {
         ...state,
-        budgets: action.payload
+        budgets: action.payload,
+        totalUserBudget
       };
     case actionTypes.ADD_BUDGET:
       return {

@@ -11,7 +11,7 @@ import LinksScreen from "../screens/LinksScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 
 import mandatoryInfo from "../components/MandatoryUserInfo";
-import RegisterationForm from "../components/RegisterationForm";
+import UpdateProfile from "../components/UpdateProfile";
 import userBudgets from "../components/Budgets";
 import AddTransactionView from "../components/AddTransactionView";
 import TransactionsView from "../components/TransactionsView";
@@ -22,11 +22,10 @@ import Profile from "../components/Profile";
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
-    Add: AddTransactionView,
-    Budgets: BudgetsView,
+
     mandatoryInfo: mandatoryInfo,
-    userBudgets: userBudgets,
-    RegisterationForm: RegisterationForm,
+
+    UpdateProfile: UpdateProfile,
     Login: Login,
     Profile: Profile
   },
@@ -66,8 +65,9 @@ HomeStack.navigationOptions = {
 const LinksStack = createStackNavigator({
   //Links: LinksScreen
 
-  Transaction: TransactionsView
-
+  Budgets: BudgetsView,
+  userBudgets: userBudgets,
+  Add: AddTransactionView
 });
 
 LinksStack.navigationOptions = {
@@ -81,12 +81,9 @@ LinksStack.navigationOptions = {
 };
 
 const SettingsStack = createStackNavigator({
+  // Settings: SettingsScreen
 
- // Settings: SettingsScreen
-
-   Transaction: TransactionsView
-
-
+  Transaction: TransactionsView
 });
 
 SettingsStack.navigationOptions = {
