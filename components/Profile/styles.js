@@ -1,8 +1,12 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#00BFFF",
-    height: 200
+    backgroundColor: "#00BFFF"
+  },
+  container: {
+    flex: 1,
+
+    backgroundColor: "#DCDCDC"
   },
   avatar: {
     width: 130,

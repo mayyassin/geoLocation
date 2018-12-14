@@ -12,12 +12,16 @@ import {
   ScrollView
 } from "react-native";
 import { Row, Grid } from "react-native-easy-grid";
-import { Button, H1 } from "native-base";
+import { Button, H1, Input } from "native-base";
 import styles from "./styles";
 class mandatoryInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { income: 0, expenses: [{ label: "", amount: "0" }] };
+    this.state = {
+      totalExpense: 0,
+      // income: 0,
+      expenses: [{ label: "", amount: 0 }]
+    };
     this.handleExpenseLabelChange = this.handleExpenseLabelChange.bind(this);
     this.handleExpenseAmountChange = this.handleExpenseAmountChange.bind(this);
     this.handleAddExpense = this.handleAddExpense.bind(this);
@@ -26,19 +30,43 @@ class mandatoryInfo extends Component {
   handleExpenseLabelChange = (value, i) => {
     const newLable = this.state.expenses.map((expense, sidx) => {
       if (i !== sidx) return expense;
-      return { ...expense, label: value };
+      return { ...expense, label: value + "" };
     });
 
     this.setState({ expenses: newLable });
   };
 
-  handleExpenseAmountChange = (value, i) => {
+  handleExpenseAmountChange = async (value, i) => {
+    // let oldAmount = 0;
+    // if (
+    //   this.state.totalExpense !== this.state.totalExpense ||
+    //   this.state.totalExpense < 0
+    // ) {
+    //   await this.setState({ totalExpense: 0 });
+    // }
+    // if (
+    //   this.state.totalExpense < this.props.profile.income &&
+    //   value < this.props.profile.income
+    // ) {
     const newAmount = this.state.expenses.map((expense, sidx) => {
       if (i !== sidx) return expense;
-      return { ...expense, amount: value };
+      // oldAmount = expense.amount;
+      return {
+        ...expense,
+        amount: value
+      };
     });
 
-    this.setState({ expenses: newAmount });
+    this.setState({
+      expenses: newAmount
+      // totalExpense: this.state.totalExpense - oldAmount + value
+    });
+    // } else {
+    //   this.setState({
+    //     totalExpense: this.state.totalExpense - value
+    //   });
+    //   alert("You can't expenses more than your income!");
+    // }
   };
 
   handleAddExpense = () => {
@@ -48,26 +76,29 @@ class mandatoryInfo extends Component {
   };
   handleSubmitExpenses = async () => {
     let filled = false;
+    let totalExpense = 0;
     this.state.expenses.forEach(expense => {
       let { amount, label } = { ...expense };
       if (label !== "" && amount !== 0) {
         filled = true;
+        totalExpense += amount;
       } else {
         filled = false;
       }
     });
 
-    if (filled && parseFloat(this.state.income) > 0) {
-      await this.props.addIncome(this.state.income);
-      await this.props.addExpenses(this.state.expenses);
-      await this.props.getBalance(this.props.income, this.props.expenses);
-      this.props.navigation.navigate("userBudgets");
+    if (filled && totalExpense < this.props.profile.income) {
+      for (let expense of this.state.expenses) {
+        await this.props.addExpenses(expense);
+      }
     } else {
-      alert("Please add at least one mandatory expense and income");
+      alert(
+        "Please fill in all boxes and make sure that your expenses don't exceed your income"
+      );
     }
   };
   handleRemoveExpense = async (idx, i) => {
-    await this.setState({
+    this.setState({
       expenses: this.state.expenses.filter((expense, sidx) => {
         if (i !== sidx) return expense;
       })
@@ -76,7 +107,6 @@ class mandatoryInfo extends Component {
   };
 
   render() {
-    // console.log(this.state.expenses);
     const inputRows = this.state.expenses.map((idx, i) => (
       <Row key={`${i}`}>
         <View style={styles.inputWrap}>
@@ -96,8 +126,17 @@ class mandatoryInfo extends Component {
             <TextInput
               style={styles.inputs}
               keyboardType="numeric"
-              value={idx.amount}
-              onChangeText={value => this.handleExpenseAmountChange(value, i)}
+              clearTextOnFocus={true}
+              defaultValue={idx.amount + ""}
+              // onChangeText={value =>
+              //   this.handleExpenseAmountChange(parseFloat(value), i)
+              // }
+              onEndEditing={e =>
+                this.handleExpenseAmountChange(
+                  parseFloat(e.nativeEvent.text),
+                  i
+                )
+              }
             />
           </View>
         </View>
@@ -116,7 +155,9 @@ class mandatoryInfo extends Component {
         contentContainerStyle={styles.contentContainer}
       >
         <Grid>
-          <H1>Income</H1>
+          <H1>Income: {this.props.profile.income} </H1>
+
+          {/* 
           <Row>
             <View style={styles.inputWrap}>
               <Text style={styles.label}>Income</Text>
@@ -128,7 +169,7 @@ class mandatoryInfo extends Component {
                 />
               </View>
             </View>
-          </Row>
+          </Row> */}
           <H1>Mandatory expenses</H1>
           {inputRows}
         </Grid>
@@ -143,13 +184,22 @@ class mandatoryInfo extends Component {
         >
           <Text>Submit</Text>
         </Button>
+        <Button
+          block
+          full
+          onPress={() => this.props.logout(this.props.navigation)}
+          style={{ marginTop: 10 }}
+        >
+          <Text>logout</Text>
+        </Button>
       </ScrollView>
     );
   }
 }
 const mapStateToProps = state => ({
   income: state.userInfo.income,
-  expenses: state.userInfo.expenses
+  expenses: state.userInfo.expenses,
+  profile: state.auth.profile
 });
 
 const mapActionsToProps = dispatch => {
@@ -159,7 +209,8 @@ const mapActionsToProps = dispatch => {
     addExpenses: (expenses, navigation) =>
       dispatch(actionCreators.addExpenses(expenses, navigation)),
     getBalance: (income, expenses) =>
-      dispatch(actionCreators.getBalance(income, expenses))
+      dispatch(actionCreators.getBalance(income, expenses)),
+    logout: navigation => dispatch(actionCreators.logout(navigation))
   };
 };
 

@@ -2,6 +2,7 @@ export {
   login,
   signup,
   logout,
+  updateProfile,
   checkForExpiredToken,
   fetchProfile,
   setErrors
