@@ -20,12 +20,19 @@ export const fetchGoals = () => {
 };
 
 export const addGoal = (goal, navigation) => {
+  let date =
+    goal.end_date.getFullYear() +
+    "-" +
+    (goal.end_date.getMonth() + 1) +
+    "-" +
+    goal.end_date.getDate();
   return dispatch => {
     instance
       .post("create/", {
         label: goal.label,
-        end_date: goal.end_date,
-        amount: goal.amount
+        end_date: date,
+        amount: goal.amount,
+        balance: goal.amount
       })
       .then(res => res.data)
       .then(goal => {
@@ -34,7 +41,7 @@ export const addGoal = (goal, navigation) => {
           payload: goal
         });
       })
-      .then(() => navigation.navigate("Goals"))
+      //   .then(() => navigation.navigate("GoalsView"))
       .catch(err => {
         dispatch(console.log(err.response));
       });

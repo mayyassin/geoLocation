@@ -1,69 +1,50 @@
 import React from "react";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View
-} from "react-native";
-
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button, List, Card, CardItem, Body } from "native-base";
 import { connect } from "react-redux";
+import * as actionCreators from "../../store/actions";
 
-// Actions
-import * as actionCreators from "../store/actions";
-
-class HomeScreen extends React.Component {
+class GoalView extends React.Component {
   static navigationOptions = {
-    title: "Home"
+    title: "Goals"
   };
-
-  async componentDidMount() {
-    await this.props.checkForExpiredToken();
+  componentDidUpdate(prevProps) {}
+  renderCard(goal) {
+    return (
+      <Card key={goal.id}>
+        <CardItem>
+          <Body>
+            <Text>{goal.label}</Text>
+            <Text>{goal.end_date}</Text>
+            <Text>{parseFloat(goal.amount).toFixed(3)}KWD</Text>
+          </Body>
+        </CardItem>
+      </Card>
+    );
   }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.user !== this.props.user) {
-      this.props.fetchBudgets();
-      console.log("Fetching goals");
-      this.props.fetchGoals();
-    }
-  }
-
   render() {
+    const goals = this.props.goals;
+    let ListItems;
+    if (goals) {
+      console.log(goals);
+
+      ListItems = goals.map(goal => this.renderCard(goal));
+    }
     return (
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
-          <Text> Home</Text>
+          <List>{ListItems}</List>
         </ScrollView>
         <View>
           <Button
             block
             success
-            onPress={() => this.props.navigation.navigate("Budgets")}
+            onPress={() => this.props.navigation.navigate("Deposit")}
           >
-            <Text style={{ color: "white" }}>Move</Text>
-          </Button>
-          <Button
-            block
-            success
-            onPress={() => this.props.navigation.navigate("Goals")}
-          >
-            <Text style={{ color: "white" }}>Goals</Text>
-          </Button>
-          <Button
-            block
-            success
-            onPress={() => this.props.navigation.navigate("GoalsView")}
-          >
-            <Text style={{ color: "white" }}>Goals View</Text>
-          </Button>
-          <Button onPress={() => this.props.navigation.navigate("Login")}>
-            <Text>Login</Text>
+            <Text style={{ color: "white" }}> ADD</Text>
           </Button>
         </View>
       </View>
@@ -72,17 +53,16 @@ class HomeScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user
+  profile: state.auth.profile,
+  goals: state.goal.goals
 });
 const mapDispatchToProps = dispatch => ({
-  fetchBudgets: () => dispatch(actionCreators.fetchBudgets()),
-  fetchGoals: () => dispatch(actionCreators.fetchGoals()),
-  checkForExpiredToken: () => dispatch(actionCreators.checkForExpiredToken())
+  fetchGoals: () => dispatch(actionCreators.fetchGoals())
 });
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(HomeScreen);
+)(GoalView);
 
 const styles = StyleSheet.create({
   container: {
