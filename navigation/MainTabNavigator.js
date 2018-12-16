@@ -9,9 +9,8 @@ import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
 import LinksScreen from "../screens/LinksScreen";
 import SettingsScreen from "../screens/SettingsScreen";
-
 import mandatoryInfo from "../components/MandatoryUserInfo";
-import RegisterationForm from "../components/RegisterationForm";
+import UpdateProfile from "../components/UpdateProfile";
 import userBudgets from "../components/Budgets";
 import AddTransactionView from "../components/AddTransactionView";
 import TransactionsView from "../components/TransactionsView";
@@ -25,11 +24,10 @@ import GoalsView from "../components/GoalView";
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
-    Add: AddTransactionView,
-    Budgets: BudgetsView,
+
     mandatoryInfo: mandatoryInfo,
-    userBudgets: userBudgets,
-    RegisterationForm: RegisterationForm,
+
+    UpdateProfile: UpdateProfile,
     Login: Login,
     Profile: Profile,
     Goals: Goals,
@@ -72,7 +70,9 @@ HomeStack.navigationOptions = {
 const LinksStack = createStackNavigator({
   //Links: LinksScreen
 
-  Transaction: TransactionsView
+  Budgets: BudgetsView,
+  userBudgets: userBudgets,
+  Add: AddTransactionView
 });
 
 LinksStack.navigationOptions = {

@@ -22,7 +22,7 @@ class userBudgets extends Component {
     super(props);
     this.state = {
       totalBudget: 0,
-      budgets: [{ category: "", label: "", amount: "0" }]
+      budgets: [{ category: "", label: "", amount: 0 }]
     };
     this.handleAddBudget = this.handleAddBudget.bind(this);
     this.handleBudgetLabelChange = this.handleBudgetLabelChange.bind(this);
@@ -40,54 +40,64 @@ class userBudgets extends Component {
   };
 
   handleBudgetAmountChange = (value, i) => {
-    let oldAmount = 0;
+    // let oldAmount = 0;
     // let value = 0;
     // if (e.nativeEvent.text.length > 0) {
     //   value = parseFloat(e.nativeEvent.text);
     // }
     // value = parseFloat(value);
 
-    if (
-      this.state.totalBudget < this.props.balance &&
-      value + this.state.totalBudget < this.props.balance
-    ) {
-      const newAmount = this.state.budgets.map((budget, sidx) => {
-        if (i !== sidx) return budget;
-        oldAmount = budget.amount;
-        return { ...budget, amount: value + "" };
-      });
-      this.setState(prevState => ({
-        budgets: newAmount,
-        // totalBudget: prevState.totalBudget - parseFloat(oldAmount) + value
-        totalBudget: prevState.totalBudget - oldAmount + value
-      }));
-    } else {
-      alert("You can't exceed you current balance");
-    }
+    // if (
+    //   this.state.totalBudget < this.props.balance &&
+    //   value + this.state.totalBudget < this.props.balance
+    // ) {
+    const newAmount = this.state.budgets.map((budget, sidx) => {
+      if (i !== sidx) return budget;
+      // oldAmount = budget.amount;
+      return { ...budget, amount: value };
+    });
+    this.setState(prevState => ({
+      budgets: newAmount
+      // totalBudget: prevState.totalBudget - parseFloat(oldAmount) + value
+      // totalBudget: prevState.totalBudget - oldAmount + value
+    }));
+    // } else {
+    //   alert("You can't exceed your current balance");
+    // }
   };
 
   handleAddBudget = () => {
     this.setState({
       budgets: this.state.budgets.concat([
-        { category: "", label: "", amount: "0" }
+        { category: "", label: "", amount: 0 }
       ])
     });
   };
   handleSubmitBudget = () => {
     let filled = false;
+    let currentTotalBudget = 0;
+
     this.state.budgets.forEach(budget => {
       let { amount, category, label } = { ...budget };
-
-      if (category !== "" && label !== "" && amount !== "0") {
+      if (category !== "" && label !== "" && amount !== 0) {
         filled = true;
+        currentTotalBudget += amount;
+      } else {
+        filled = false;
       }
     });
-    if (filled) {
+    if (
+      filled &&
+      currentTotalBudget + this.props.totalUserBudget <
+        this.props.profile.balance
+    ) {
       this.state.budgets.forEach(budget =>
         this.props.addBudget(budget, this.props.navigation)
       );
     } else {
-      alert("Please make sure that you fill in all the boxes");
+      alert(
+        "Please make sure that you fill in all the boxes and that you're total budgets don't exceed your current balance"
+      );
     }
   };
   handleRemoveBudget = i => {
@@ -126,15 +136,17 @@ class userBudgets extends Component {
         <View style={styles.inputWrap}>
           <Text style={styles.label}>Amount</Text>
           <View style={styles.inputContainer}>
-            <Input
+            <TextInput
               style={styles.inputs}
-              // keyboardType="numeric"
-              value={idx.amount}
+              keyboardType="numeric"
+              defaultValue={idx.amount + ""}
               clearTextOnFocus={true}
-              onChangeText={value =>
-                this.handleBudgetAmountChange(parseFloat(value), i)
+              // onChangeText={value =>
+              //   this.handleBudgetAmountChange(parseFloat(value), i)
+              // }
+              onEndEditing={e =>
+                this.handleBudgetAmountChange(parseFloat(e.nativeEvent.text), i)
               }
-              // onEndEditing={e => this.handleBudgetAmountChange(e, i)}
             />
           </View>
         </View>
@@ -170,13 +182,15 @@ class userBudgets extends Component {
         </Row>
       </Row>
     ));
+
     return (
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
       >
         <Grid>
-          <H1>Current Balance {this.props.balance} KD</H1>
+          <H1>Current Balance {this.props.profile.balance} KD</H1>
+          <H1>Current Total Budget: {this.props.totalUserBudget} KD</H1>
 
           <H1>Your budgets</H1>
           {inputRows}
@@ -198,13 +212,16 @@ class userBudgets extends Component {
 }
 
 const mapStateToProps = state => ({
-  balance: state.userInfo.balance
+  profile: state.auth.profile,
+  totalUserBudget: state.budget.totalUserBudget
 });
 
 const mapActionsToProps = dispatch => {
   return {
     addBudget: (budget, navigation) =>
-      dispatch(actionCreators.addBudget(budget, navigation))
+      dispatch(actionCreators.addBudget(budget, navigation)),
+    getBalance: (income, expenses) =>
+      dispatch(actionCreators.getBalance(income, expenses))
   };
 };
 

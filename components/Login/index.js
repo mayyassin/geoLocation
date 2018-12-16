@@ -90,7 +90,9 @@ class Login extends Component {
           <Button
             full
             warning
-            onPress={() => this.props.signup(this.state, this.props.navigation)}
+            onPress={() => {
+              this.props.signup(this.state, this.props.navigation);
+            }}
           >
             <Text>Register</Text>
           </Button>
