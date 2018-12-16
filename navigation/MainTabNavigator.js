@@ -9,7 +9,6 @@ import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
 import LinksScreen from "../screens/LinksScreen";
 import SettingsScreen from "../screens/SettingsScreen";
-
 import mandatoryInfo from "../components/MandatoryUserInfo";
 import UpdateProfile from "../components/UpdateProfile";
 import userBudgets from "../components/Budgets";
@@ -18,6 +17,9 @@ import TransactionsView from "../components/TransactionsView";
 import BudgetsView from "../components/BudgetsView";
 import Login from "../components/Login";
 import Profile from "../components/Profile";
+import Goals from "../components/Goal";
+import Deposit from "../components/Deposit";
+import GoalsView from "../components/GoalView";
 
 const HomeStack = createStackNavigator(
   {
@@ -27,7 +29,10 @@ const HomeStack = createStackNavigator(
 
     UpdateProfile: UpdateProfile,
     Login: Login,
-    Profile: Profile
+    Profile: Profile,
+    Goals: Goals,
+    Deposit: Deposit,
+    GoalsView: GoalsView
   },
   {
     initialRouteName: "Home",

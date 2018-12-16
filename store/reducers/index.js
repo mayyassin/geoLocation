@@ -5,10 +5,14 @@ import userInfoReducer from "./userInfoReducer";
 
 import transactionReducer from "./transactionReducer";
 import budgetReducer from "./budgetReducer";
+import depositReducer from "./depositReducer";
+import goalReducer from "./goalReducer";
 
 export default combineReducers({
   auth: AuthReducer,
   userInfo: userInfoReducer,
   transaction: transactionReducer,
-  budget: budgetReducer
+  budget: budgetReducer,
+  deposit: depositReducer,
+  goal: goalReducer
 });

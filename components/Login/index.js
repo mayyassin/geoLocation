@@ -30,12 +30,12 @@ class Login extends Component {
   }
   componentDidMount() {
     if (this.props.user) {
-      this.props.navigation.replace("mandatoryInfo");
+      this.props.navigation.replace("Goals");
     }
   }
   componentDidUpdate(prevProps) {
     if (prevProps.profile !== this.props.profile) {
-      this.props.navigation.replace("mandatoryInfo");
+      this.props.navigation.replace("Goals");
     }
   }
   render() {

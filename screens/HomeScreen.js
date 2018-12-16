@@ -5,15 +5,12 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 } from "react-native";
 
 import { Button, List, Card, CardItem, Body } from "native-base";
-import { WebBrowser } from "expo";
 import { connect } from "react-redux";
-import { MonoText } from "../components/StyledText";
-import BudgetsView from "../components/BudgetsView";
+
 // Actions
 import * as actionCreators from "../store/actions";
 
@@ -29,6 +26,8 @@ class HomeScreen extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.user !== this.props.user) {
       this.props.fetchBudgets();
+      console.log("Fetching goals");
+      this.props.fetchGoals();
     }
   }
 
@@ -48,6 +47,23 @@ class HomeScreen extends React.Component {
             onPress={() => this.props.navigation.navigate("Budgets")}
           >
             <Text style={{ color: "white" }}>Move</Text>
+          </Button>
+          <Button
+            block
+            success
+            onPress={() => this.props.navigation.navigate("Goals")}
+          >
+            <Text style={{ color: "white" }}>Goals</Text>
+          </Button>
+          <Button
+            block
+            success
+            onPress={() => this.props.navigation.navigate("GoalsView")}
+          >
+            <Text style={{ color: "white" }}>Goals View</Text>
+          </Button>
+          <Button onPress={() => this.props.navigation.navigate("Login")}>
+            <Text>Login</Text>
           </Button>
           {!this.props.user ? (
             <Button
@@ -93,6 +109,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   fetchBudgets: () => dispatch(actionCreators.fetchBudgets()),
+  fetchGoals: () => dispatch(actionCreators.fetchGoals()),
   checkForExpiredToken: () => dispatch(actionCreators.checkForExpiredToken())
 });
 export default connect(
