@@ -26,7 +26,7 @@ class GoalView extends React.Component {
     const goals = this.props.goals;
     let ListItems;
     if (goals) {
-      console.log(goals);
+      // console.log(goals);
 
       ListItems = goals.map(goal => this.renderCard(goal));
     }

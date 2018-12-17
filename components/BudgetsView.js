@@ -41,7 +41,7 @@ class BudgetsView extends React.Component {
     const budgets = this.props.budgets;
     let ListItems;
     if (budgets) {
-      console.log(budgets);
+      // console.log(budgets);
 
       ListItems = budgets.map(budget => this.renderCard(budget));
     }

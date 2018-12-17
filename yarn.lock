@@ -5818,7 +5818,7 @@ react-native-keyboard-aware-scroll-view@0.5.0:
     prop-types "^15.6.0"
     react-native-iphone-x-helper "^1.0.1"
 
-"react-native-maps@github:expo/react-native-maps#v0.22.1-exp.0":
+react-native-maps@expo/react-native-maps#v0.22.1-exp.0:
   version "0.22.1"
   resolved "https://codeload.github.com/expo/react-native-maps/tar.gz/e6f98ff7272e5d0a7fe974a41f28593af2d77bb2"
 
@@ -6037,6 +6037,11 @@ react-test-renderer@^16.5.0:
     react-is "^16.6.3"
     scheduler "^0.11.2"
 
+react-thunk@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-thunk/-/react-thunk-1.0.0.tgz#79813d47f31147e81aee841ed5e76a9e3eabc8b1"
+  integrity sha1-eYE9R/MRR+ga7oQe1edqnj6ryLE=
+
 react-timer-mixin@^0.13.2:
   version "0.13.4"
   resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.4.tgz#75a00c3c94c13abe29b43d63b4c65a88fc8264d3"
@@ -6121,6 +6126,11 @@ realpath-native@^1.0.0:
   integrity sha512-+S3zTvVt9yTntFrBpm7TQmQ3tzpCrnA1a/y+3cUHAc9ZR6aIjG0WNLR+Rj79QpJktY+VeW/TQtFlQ1bzsehI8g==
   dependencies:
     util.promisify "^1.0.0"
+
+redux-saga-location@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/redux-saga-location/-/redux-saga-location-1.3.0.tgz#757fd738f9178b543aaa61e3fd2361939e2743b6"
+  integrity sha512-Y+W238UkhYgKrEB+M2ITFhCxipN7/kGwMPtkNZXY6dZEqHN0lGyfJ5hqCp851iWI403DhAKn+PQTXM/DXHt78Q==
 
 redux-thunk@^2.3.0:
   version "2.3.0"

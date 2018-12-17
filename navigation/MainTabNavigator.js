@@ -20,9 +20,11 @@ import Profile from "../components/Profile";
 import Goals from "../components/Goal";
 import Deposit from "../components/Deposit";
 import GoalsView from "../components/GoalView";
+import Location from "../components/Location";
 
 const HomeStack = createStackNavigator(
   {
+    Location: Location,
     Home: HomeScreen,
 
     mandatoryInfo: mandatoryInfo,
@@ -35,7 +37,7 @@ const HomeStack = createStackNavigator(
     GoalsView: GoalsView
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "Location",
     navigationOptions: {
       headerTintColor: "black",
       headerStyle: {
